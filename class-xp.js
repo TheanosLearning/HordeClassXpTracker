@@ -7,6 +7,7 @@ if(window.location.href.includes(gearsServiceURL)) {
     var scoutXP    = localStorage.getItem("scoutXP")    != null ? localStorage.getItem("scoutXP").split(',')    : [];
     var heavyXP    = localStorage.getItem("heavyXP")    != null ? localStorage.getItem("heavyXP").split(',')    : [];
     var engineerXP = localStorage.getItem("engineerXP") != null ? localStorage.getItem("engineerXP").split(',') : [];
+    var credits    = localStorage.getItem("credits")    != null ? localStorage.getItem("credits").split(',')    : [];
 
 
     var hordeVersusXP = [soldierXP, sniperXP, scoutXP, heavyXP, engineerXP, eXP];
@@ -52,5 +53,19 @@ if(window.location.href.includes(gearsServiceURL)) {
                 console.error("Failed to update XP.");
         }
     }
+
+    // logic for updating credits
+    // [90, 91, 92] -> [1000, 10000, 100000] -> x10 x100 x1000
+    var totalCreditsEarned = 10 * gow4Data.achievements.Achievements.filter(a => a.Id === "90").pop().Progress;
+
+    if(credits.length > 0) {
+        if(totalCreditsEarned > credits[credits.length - 1]) {
+            credits.push(totalCreditsEarned);
+        }
+    } else {
+        credits.push(totalCreditsEarned);
+    }
+
+    localStorage.setItem("credits", credits);
 
 }
